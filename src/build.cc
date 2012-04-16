@@ -88,9 +88,10 @@ BuildStatus::BuildStatus(const BuildConfig& config)
   smart_terminal_ = GetConsoleScreenBufferInfo(console_, &csbi);
 
   if (!smart_terminal_) {
+    int length;
     char term[5];
-    if (GetEnvironmentVariable("TERM", term, 5) &&
-        string(term) != "dumb") {
+    if ((length = GetEnvironmentVariable("TERM", term, 5)) &&
+        (length > 5 || string(term) != "dumb")) {
       console_ = NULL;
       smart_terminal_ = true;
     }
